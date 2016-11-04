@@ -1,0 +1,196 @@
+html, body {
+  font-family: 'Open Sans', sans-serif;
+  color: #756e64;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 1.4;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  background: #8D3105;
+}
+
+#container {
+  height: 100vh;
+}
+
+#container > div {
+  height: 13vh;
+  border: 1px solid #fff;
+  border-width: 0 1px 1px 1px;
+}
+
+#container > div:first-child,
+#container > div:last-child {
+  height: 37vh;
+  font-size: 88px;
+}
+
+#container > div:nth-child(2) {
+  background: #008D81;
+}
+
+#container > div:nth-child(3) {
+  background: #0EDAC8;
+}
+
+#container > div:nth-child(2) input[type=range]:after {
+  content: 'Threshold ' attr(value);
+  top: -5vh;
+}
+
+#container > div:nth-child(3) input[type=range]:after {
+  content: 'Delay ' attr(value) 's';
+  top: auto;
+  bottom: -5vh;
+}
+
+#container > div input[type=range] {
+  background: transparent;
+  -webkit-appearance: none;
+  margin: 0;
+  width: 100%;
+  height: inherit;
+  position: relative;
+}
+
+#container > div input[type=range]:after {
+  position: absolute;
+  display: block;
+  left: calc(50% - 25vw);
+  width: 50vw;
+  height: 8vh;
+  line-height: 8vh;
+  background: #C70D3C;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 300;
+  border-radius: 10px;
+  border: 1px solid #fff;
+}
+
+/* range sliders */
+#container > div input[type=range]:focus {
+  outline: none;
+}
+
+#container > div input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 13hv;
+  cursor: pointer;
+}
+
+#container > div input[type=range]::-webkit-slider-thumb {
+  width: 20vw;
+  height: 13vh;
+  background: #FF6F2A;
+  cursor: pointer;
+  -webkit-appearance: none;
+  outline: 1px solid #fff;
+  border: 0;
+}
+
+/* start */
+#container > div:last-child input[type=button] {
+  width: 100%;
+  height: inherit;
+  border: none;
+  border-radius: 0;
+  display: block;
+  background: #da500e;
+  color: #fff;
+  font-size: inherit;
+  font-weight: 300;
+  text-align: center;
+}
+
+@media all and (min-width: 480px) {
+  #container > div:nth-child(2),
+  #container > div:nth-child(3) {
+    width: 75vw;
+    height: 25vh;
+  }
+
+  #container > div:nth-child(3) input[type=range]:after {
+    bottom: -1px;
+  }
+
+  #container > div:last-child {
+    font-size: 24px;
+    width: calc(25vw - 3px);
+    height: calc(50vh + 1px);
+    float: right;
+    margin-top: calc(-50vh - 2px);
+  }
+
+  #container > div input[type=range]::-webkit-slider-runnable-track,
+  #container > div input[type=range]::-webkit-slider-thumb {
+    height: 25vh;
+  }
+}
+
+@media all and (min-width: 768px) {
+  #container {
+    width: 768px;
+    height: 600px;
+    margin: 0 auto;
+  }
+
+  #container > div {
+    height: 150px;
+  }
+
+  #container > div:first-child,
+  #container > div:last-child {
+    height: 300px;
+  }
+
+  #container > div:nth-child(2),
+  #container > div:nth-child(3) {
+    width: 75%;
+    height: 150px;
+  }
+
+  #container > div:last-child {
+    width: 25%;
+    margin-top: -302px;
+  }
+
+  #container > div input[type=range]:after {
+    width: 150px;
+    height: 48px;
+    line-height: 48px;
+    left: calc(50% - 75px);
+  }
+
+  #container > div:nth-child(2) input[type=range]:after {
+    top: -24px;
+  }
+
+  #container > div:nth-child(3) input[type=range]:after {
+    top: auto;
+    bottom: -24px;
+  }
+
+  #container > div input[type=range]::-webkit-slider-runnable-track,
+  #container > div input[type=range]::-webkit-slider-thumb {
+    height: 150px;
+  }
+
+  #container > div input[type=range]::-webkit-slider-thumb {
+    width: 150px;
+  }
+}
+
+@media all and (min-width: 1024px) {
+
+}
+
+@media all and (min-width: 480px) {
+
+}
