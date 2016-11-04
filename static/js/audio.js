@@ -1,43 +1,54 @@
 // adult male will have a fundamental frequency from 85 to 180 Hz, and that of a typical adult female from 165 to 255 Hz
 
-////class AudioDelayer {
-////  constructor () {
-////    this.startBtn = document.querySelector('#start');
-////    this.stopBtn = document.querySelector('#stop');
-////    this.delayOption = document.querySelector('#delay');
-////    
-////    this.startBtn.addEventListener('click', this.start);
-////    this.stopBtn.addEventListener('click', this.stop);
-////    this.delayOption.addEventListener('change', this.delayChanged);
-////  }
-////  
-////  start () {
-////    console.log('start');
-////  }
-////  
-////  stop () {
-////    console.log('stop');
-////  }
-////  
-////  delayChanged () {
-////    console.log('delay');
-////  }
-////};
-////
-////window.addEventListener('load', () => {
-////  const delayer = new AudioDelayer();
-////});
-//
+class Iridium {
+  constructor () {
+    this.events = document.createElement('null');
+    this.thresholdEl = document.querySelector('#threshold');
+    this.delayEl = document.querySelector('#delay');
+    this.startEl = document.querySelector('#start');
+    this.thresholdLevel = 1;
+    this.delayTime = 1;
+
+    this.startEl.addEventListener('click', this.toggleStartStop);
+//    this.stopBtn.addEventListener('click', this.stop);
+//    this.delayOption.addEventListener('change', this.delayChanged);
+    this.events.on('test', (ev) => console.log(ev));
+  }
+  
+  toggleStartStop () {
+    console.log('start');
+  }
+  
+  delayChanged () {
+    console.log('delay');
+  }
+};
+
 window.addEventListener('load', () => {
+  // setup input/change events on ranges to update their values when changed
+  document.querySelectorAll('input[type=range]')
+    .forEach(item => ['input', 'change'].forEach(str =>
+      item.addEventListener(str, ev =>
+        item.setAttribute('value', ev.target.value))));
+
+  const delayer = new Iridium();
+
+  return;
+});
+
+
+
+window.addEventListener('load', () => {
+  return;
+
   navigator.mediaDevices.getUserMedia({audio: true})
     .then((stream) => {
-      const frequencyView = document.querySelector('#frequency-data');
       const audioSource = document.createElement('audio');
       audioSource.src = 'http://localhost:4000/martian_sample.mp3';
 //      audioSource.src = 'http://localhost:4000/martian_silence.mp3';
 //      audioSource.src = 'http://localhost:4000/bk_hach_001603_sample.mp3';
 //      audioSource.src = 'http://localhost:4000/bk_peng_002515_sample.mp3';
-      audioSource.src = 'http://localhost:4000/bk_podm_000293_sample.mp3';
+//      audioSource.src = 'http://localhost:4000/bk_podm_000293_sample.mp3';
 //      audioSource.loop = true;
 //setTimeout(() => audioSource.play(), 0);
 
