@@ -1,26 +1,59 @@
 // adult male will have a fundamental frequency from 85 to 180 Hz, and that of a typical adult female from 165 to 255 Hz
-
 class Iridium {
   constructor () {
-    this.events = document.createElement('null');
     this.thresholdEl = document.querySelector('#threshold');
     this.delayEl = document.querySelector('#delay');
     this.startEl = document.querySelector('#start');
     this.thresholdLevel = 1;
     this.delayTime = 1;
+    this.started = false;
+    this.emitter = new EventEmitter();
 
-    this.startEl.addEventListener('click', this.toggleStartStop);
-//    this.stopBtn.addEventListener('click', this.stop);
-//    this.delayOption.addEventListener('change', this.delayChanged);
-    this.events.on('test', (ev) => console.log(ev));
+    const eventList = {
+      'startClicked': this.startClicked,
+      'stopClicked': this.stopClicked,
+      'thresholdChanged': this.thresholdChanged,
+      'delayTimeChanged': this.delayTimeChanged
+    };
+
+    for (let i in eventList) {
+      this.emitter.on(i, eventList[i].bind(this));
+    }
+
+    // reset ranges
+    this.thresholdEl.value = this.thresholdLevel;
+    this.delayEl.value = this.delayTime;
+
+    this.startEl.addEventListener('click', () => this.emitter.emit(
+      this.started ? 'stopClicked' : 'startClicked'));
+
+    // bind to both events for IE
+    // generates double events in chrome 
+    ['input', 'change'].forEach((str) => {
+      this.thresholdEl.addEventListener(str, (ev) =>
+        this.emitter.emit('thresholdChanged', ev.target.value));
+
+      this.delayEl.addEventListener(str, (ev) =>
+        this.emitter.emit('delayTimeChanged', ev.target.value));
+    });
+  }
+
+  startClicked () {
+    console.log('startClicked');
+    this.started = true;
+  }
+
+  stopClicked () {
+    console.log('stopClicked');
+    this.started = false;
   }
   
-  toggleStartStop () {
-    console.log('start');
+  thresholdChanged (val) {
+    console.log('##', val);
   }
   
-  delayChanged () {
-    console.log('delay');
+  delayTimeChanged (val) {
+    console.log('##', val);
   }
 };
 

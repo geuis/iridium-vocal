@@ -9,7 +9,8 @@
   <link href="/static/css/normalize.css" rel="stylesheet">
   <link href="/static/css/style.css" rel="stylesheet">
   <script src="/static/js/audio.js"></script>
-  <script src="/static/js/event_emitter.min.js"></script>
+  <script src="/static/js/event_emitter_3.js"></script>
+  <!--<script src="/static/js/eventemitter2.js"></script>-->
 </head>
 <body>
   <div id="container">
@@ -19,6 +20,7 @@
     <div>
       <input type="range"
         id="threshold"
+        autocomplete="off"
         min="1"
         max="10"
         step="1"
@@ -27,6 +29,7 @@
     <div>
       <input type="range"
         id="delay"
+        autocomplete="off"
         min="1"
         max="20"
         step="1"
