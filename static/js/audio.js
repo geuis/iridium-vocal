@@ -1,51 +1,85 @@
 // adult male will have a fundamental frequency from 85 to 180 Hz, and that of a typical adult female from 165 to 255 Hz
 class Iridium {
   constructor () {
+    this.resetDefaults();
+
+    // reset ranges
+    this.thresholdEl.value = this.thresholdLevel;
+    this.delayEl.value = this.delayTime;
+
+    const eventList = {
+      'startClicked': this.startClicked,
+      'stopClicked': this.stopClicked,
+      'thresholdChanged': this.thresholdChanged,
+      'delayTimeChanged': this.delayTimeChanged,
+      'audioProcessData': this.audioProcessData
+    };
+
+    // register events in eventEmitter
+    for (let i in eventList) {
+      this.emitter.on(i, eventList[i].bind(this));
+    }
+
+    // bind dom elements to trigger their events
+    this.startEl.addEventListener('click', () => this.emitter.emit(
+      this.started ? 'stopClicked' : 'startClicked'));
+
+    // may be an issue where IE doesn't trigger 'input' events on range inputs
+    // and issues a 'change' event. Chrome/Safari trigger them separately. May
+    // need to add a workaround for this in the future
+    // http://stackoverflow.com/questions/4562354/javascript-detect-if-event-lister-is-supported
+    this.thresholdEl.addEventListener('input', (ev) =>
+      this.emitter.emit('thresholdChanged', ev.target.value));
+
+    this.delayEl.addEventListener('input', (ev) =>
+      this.emitter.emit('delayTimeChanged', ev.target.value));
+  }
+
+  resetDefaults () {
     this.thresholdEl = document.querySelector('#threshold');
     this.delayEl = document.querySelector('#delay');
     this.startEl = document.querySelector('#start');
     this.thresholdLevel = 1;
     this.delayTime = 1;
     this.started = false;
+    this.audioContext = null;
+    this.audioProcessor = null;
+    this.audioSource = null;
     this.emitter = new EventEmitter();
-
-    const eventList = {
-      'startClicked': this.startClicked,
-      'stopClicked': this.stopClicked,
-      'thresholdChanged': this.thresholdChanged,
-      'delayTimeChanged': this.delayTimeChanged
-    };
-
-    for (let i in eventList) {
-      this.emitter.on(i, eventList[i].bind(this));
-    }
-
-    // reset ranges
-    this.thresholdEl.value = this.thresholdLevel;
-    this.delayEl.value = this.delayTime;
-
-    this.startEl.addEventListener('click', () => this.emitter.emit(
-      this.started ? 'stopClicked' : 'startClicked'));
-
-    // bind to both events for IE
-    // generates double events in chrome 
-    ['input', 'change'].forEach((str) => {
-      this.thresholdEl.addEventListener(str, (ev) =>
-        this.emitter.emit('thresholdChanged', ev.target.value));
-
-      this.delayEl.addEventListener(str, (ev) =>
-        this.emitter.emit('delayTimeChanged', ev.target.value));
-    });
   }
 
   startClicked () {
-    console.log('startClicked');
-    this.started = true;
+    return navigator.mediaDevices.getUserMedia({audio: true})
+      .then((stream) => {
+        if (!this.audioContext) {
+          this.audioContext = new AudioContext();
+          this.audioSource = this.audioContext.createMediaStreamSource(stream);
+          this.audioProcessor = this.audioContext
+            .createScriptProcessor(512, 1, 1);
+
+          this.audioSource.connect(this.audioProcessor);
+          this.audioProcessor.connect(this.audioContext.destination);
+
+          this.audioProcessor.onaudioprocess = this.audioProcessData;
+        }
+        
+        this.started = true;
+        this.startEl.value = 'Stop';
+
+        if (this.audioContext.state === 'suspended') {
+          this.audioContext.resume();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.name + ' ' + err.message);
+      });
   }
 
   stopClicked () {
-    console.log('stopClicked');
+    this.startEl.value = 'Start';
     this.started = false;
+    this.audioContext.suspend();
   }
   
   thresholdChanged (val) {
@@ -54,6 +88,30 @@ class Iridium {
   
   delayTimeChanged (val) {
     console.log('##', val);
+  }
+  
+  audioProcessData (data) {
+//    console.log(data);
+//            console.log(data);
+////            if (this.started) {
+////              const channelCount = data.outputBuffer.numberOfChannels;
+////
+////              for (let i = 0; i < channelCount; i++) {
+////                const inputChannelData = data.inputBuffer.getChannelData(i);
+////                const outputChannelData = data.outputBuffer.getChannelData(i);
+////
+////                for (let j = 0; j < outputChannelData.length; j++) {
+////                  outputChannelData[j] = inputChannelData[j];
+////                }
+////              }
+////
+////            }
+////            console.log(this.audioProcessor.onaudioprocess);
+////            return this.audioProcessData;
+//          }
+
+//          const audioCache = [];
+
   }
 };
 
