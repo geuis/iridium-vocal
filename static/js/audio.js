@@ -1,3 +1,9 @@
+// issues
+// if audio is muted when Start first toggled, empty silence is recorded for the
+//   first go
+// playback doesn't stop looping when Start toggles to Stop
+// have alternate visual for audio playback
+
 // adult male will have a fundamental frequency from 85 to 180 Hz,
 // and that of a typical adult female from 165 to 255 Hz
 // const dB = 20 * Math.log10(Math.abs(data));

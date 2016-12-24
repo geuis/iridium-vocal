@@ -14,8 +14,21 @@ html, body {
   background: #8D3105;
 }
 
+body > h1 {
+  color: #fff;
+  margin: 0 auto;
+  padding: 0;
+  background: #008D81;
+  font-size: 15px;
+  font-weight: 300;
+  text-align: center;
+  line-height: 6vh;
+  height: 6vh;
+  border: 1px solid #fff;
+}
+
 #container {
-  height: 100vh;
+  height: 96vh;
 }
 
 #container > div {
@@ -103,6 +116,10 @@ html, body {
 }
 
 /* start */
+#container > div:last-child {
+  height: 30vh;
+}
+
 #container > div:last-child input[type=checkbox] {
   visible: hidden;
   position: absolute;
@@ -162,6 +179,11 @@ html, body {
 }
 
 @media all and (min-width: 768px) {
+  body > h1 {
+    width: 766px;
+    font-size: 20px;
+  }
+
   #container {
     width: 768px;
     height: 600px;
