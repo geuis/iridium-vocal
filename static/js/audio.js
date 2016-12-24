@@ -22,16 +22,22 @@ class Iridium {
     this.started = false;
     this.playbackTimeout = null;
 
-    setInterval(() => {
-      console.log('speaking:', this.isSpeaking, 'playing:', this.isPlaying,
-        'inputAudioCache:', this.inputAudioCache.length,
-        'threshold:', this.thresholdLevel);
-    }, 1000);
-
     // reset ranges
     this.thresholdEl.value = 1;
     this.delayEl.value = 1;
 
+    this.setupEvents();
+
+    this.setupInputAudio()
+      .then(() => {
+        this.initVisualizeAudio();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  setupEvents () {
     const eventList = {
       'startClicked': this.startClicked,
       'stopClicked': this.stopClicked,
@@ -65,14 +71,6 @@ class Iridium {
 
     this.delayEl.addEventListener('input', (ev) =>
       this.emitter.emit('delayTimeChanged', ev.target.value));
-
-    this.setupInputAudio()
-      .then(() => {
-        this.initVisualizeAudio();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   setupInputAudio () {
@@ -148,8 +146,13 @@ class Iridium {
     return this.playbackAudioContext
       .close()
       .then(() => {
-        console.log('playbackAudioContext closed');
         this.playbackAudioContext = new AudioContext();
+
+        // trim off excess delay silence at end of section. Add 1 second exta
+        // between playbacks
+        this.inputAudioCache = this.inputAudioCache.slice(0,
+          this.inputAudioCache.length - (this.inputAudioContext.sampleRate *
+          this.delayTime) + this.inputAudioContext.sampleRate);
 
         const buff = this.playbackAudioContext.createBuffer(1,
           this.inputAudioCache.length, this.inputAudioContext.sampleRate);
