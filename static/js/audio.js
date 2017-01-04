@@ -12,6 +12,7 @@ class Iridium {
     this.thresholdEl = document.querySelector('#threshold');
     this.delayEl = document.querySelector('#delay');
     this.recordToggleEl = document.querySelector('#record-toggle');
+    this.errorEl = document.querySelector('#error-field');
 
     this.emitter = new EventEmitter();
     this.inputAudioContext = new AudioContext();
@@ -41,6 +42,10 @@ class Iridium {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  checkCompat () {
+    
   }
 
   setupEvents () {
@@ -178,6 +183,8 @@ class Iridium {
 
   startClicked () {
     this.started = true;
+    
+this.displayError('itsa mario');
   }
 
   stopClicked () {
@@ -194,6 +201,23 @@ class Iridium {
 
   delayTimeChanged (val) {
     this.delayTime = val * 1;
+  }
+
+  displayError (msg) {
+    this.errorEl.innerHTML = msg;
+
+    const classes = this.errorEl.getAttribute('class').split(' ') || [];
+
+    if (classes.indexOf('show') === -1) {
+      classes.push('show');
+    }
+
+    this.errorEl.setAttribute('class', classes.join(' '));
+
+    classes.pop();
+
+    setTimeout(() => this.errorEl.setAttribute('class', classes.join(' ')),
+      5000);
   }
 
   initVisualizeAudio () {
