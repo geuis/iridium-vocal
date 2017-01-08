@@ -34,6 +34,7 @@ body > #error-field {
   border: 3px solid #cc0000;
   border-radius: 10px;
   transition: top .75s;
+  text-align: center;
 }
 
 body > #error-field.show {
@@ -50,7 +51,8 @@ body > #error-field.show {
   border-bottom: 0;
 }
 
-#container > div > h1 {
+#container > div > h1,
+#container > div > h1 + div {
   color: #fff;
   margin: 0;
   padding: 0;
@@ -62,6 +64,13 @@ body > #error-field.show {
   height: 6vh;
 }
 
+#container > div > h1 + div {
+  position: absolute;
+  right: 10px;
+  top: 1px;
+  cursor: pointer;
+}
+
 #container > div:nth-of-type(2) {
   overflow: hidden;
 }
@@ -69,7 +78,7 @@ body > #error-field.show {
 #container > div > canvas {
   width: 100%;
   height: 30vh;
-  background: #cc0000;
+  background: #000;
 }
 
 #container > div:nth-of-type(3) {
@@ -110,6 +119,25 @@ body > #error-field.show {
   outline: 1px solid #fff;
   border: 0;
 }
+
+/* these have to be repeated because unrecongized selectors cause all of them
+   to fail if linked with commas. Disabled until I can spend time getting
+   Firefox styled correctly. */
+/*#container > div input[type=range]::-moz-range-track {*/
+/*  width: 100%;*/
+/*  height: 14vh;*/
+/*  cursor: pointer;*/
+/*}*/
+/**/
+/*#container > div input[type=range]::-moz-range-thumb {*/
+/*  width: 20vw;*/
+/*  height: 14vh;*/
+/*  background: #FF6F2A;*/
+/*  cursor: pointer;*/
+/*  -webkit-appearance: none;*/
+/*  outline: 1px solid #fff;*/
+/*  border: 0;*/
+/*}*/
 
 /* labels */
 #container > div > input[type=range]:after {
@@ -178,93 +206,90 @@ body > #error-field.show {
 }
 
 @media all and (min-width: 480px) {
-/*  #container > div:nth-child(3),*/
-/*  #container > div:nth-child(4) {*/
-/*    width: 70vw;*/
-/*    height: 25vh;*/
-/*  }*/
+  #container > div > canvas {
+    height: 43vh;
+  }
 
   #container > div:nth-of-type(3),
   #container > div:nth-of-type(4) {
     width: 70vw;
   }
 
+  #container > div:nth-of-type(4) {
+    border-bottom: 1px solid #fff;
+  }
+
+  #container > div:nth-of-type(4) input[type=range]:after {
+    bottom: -1px;
+  }
+
   /* start button */
   #container > div:last-child {
     position: relative;
-    width: calc(30vw + 1px);
     float: right;
-    top: calc(-28vh - 2px);
-/*    float: right;*/
-/*    margin-top: calc(-50vh - 2px);*/
-/*  margin-top: calc(-50vh);*/
+    top: calc(-50vh - 3px);
+    width: calc(30vw + 1px);
+  }
+
+  #container > div > input[type=range],
+  #container > div > input[type=range]::-webkit-slider-runnable-track,
+  #container > div > input[type=range]::-webkit-slider-thumb {
+    height: 25vh;
   }
 
   #container > div:last-child label {
     font-size: 24px;
+    height: calc(50vh + 2px);
   }
-/*  #container > div input[type=range]::-webkit-slider-runnable-track,*/
-/*  #container > div input[type=range]::-webkit-slider-thumb {*/
-/*    height: 25vh;*/
-/*  }*/
 }
 
-/*@media all and (min-width: 768px) {*/
-/*  body > h1 {*/
-/*    width: 766px;*/
-/*    font-size: 20px;*/
-/*  }*/
-/**/
-/*  #container {*/
-/*    width: 768px;*/
-/*    height: 600px;*/
-/*    margin: 0 auto;*/
-/*  }*/
-/**/
-/*  #container > div {*/
-/*    height: 150px;*/
-/*  }*/
-/**/
-/*  #container > div:first-child,*/
-/*  #container > div:last-child {*/
-/*    height: 300px;*/
-/*  }*/
-/**/
-/*  #container > div:nth-child(2),*/
-/*  #container > div:nth-child(3) {*/
-/*    width: 75%;*/
-/*    height: 150px;*/
-/*  }*/
-/**/
-/*  /* start button */*/
-/*  #container > div:last-child {*/
-/*    width: calc(25% - 3px);*/
-/*/*    height: 301px;*/*/
-/*/*    margin-top: -302px;*/*/
-/*  }*/
-/**/
-/*  #container > div input[type=range]:after {*/
-/*    width: 150px;*/
-/*    height: 48px;*/
-/*    line-height: 48px;*/
-/*    left: calc(50% - 75px);*/
-/*  }*/
-/**/
-/*  #container > div:nth-child(2) input[type=range]:after {*/
-/*    top: -24px;*/
-/*  }*/
-/**/
-/*  #container > div:nth-child(3) input[type=range]:after {*/
-/*    top: auto;*/
-/*    bottom: -24px;*/
-/*  }*/
-/**/
-/*  #container > div input[type=range]::-webkit-slider-runnable-track,*/
-/*  #container > div input[type=range]::-webkit-slider-thumb {*/
-/*    height: 150px;*/
-/*  }*/
-/**/
-/*  #container > div input[type=range]::-webkit-slider-thumb {*/
-/*    width: 150px;*/
-/*  }*/
-/*}*/
+@media all and (min-width: 768px) {
+  #container {
+    width: 768px;
+    height: 600px;
+    margin: 0px auto;
+  }
+
+  #container > div > canvas {
+    height: 300px;
+  }
+
+  #container > div > input[type=range],
+  #container > div > input[type=range]::-webkit-slider-runnable-track,
+  #container > div > input[type=range]::-webkit-slider-thumb {
+    height: 125px;
+  }
+
+  #container > div > input[type=range]::-webkit-slider-thumb {
+    width: 125px;
+  }
+
+  #container > div:nth-of-type(3),
+  #container > div:nth-of-type(4) {
+    width: 570px;
+  }
+
+  #container > div > input[type=range]:after {
+    width: 200px;
+    left: calc(50% - 100px);
+  }
+
+  #container > div:last-child {
+    top: -253px;
+    width: 200px
+  }
+
+  #container > div:last-child label {
+    font-size: 24px;
+    height: 251px;
+  }
+
+@media all and (min-width: 1024px) {
+  #container {
+    margin-top: 20px;
+  }
+
+  #container > div:nth-of-type(4) input[type=range]:after {
+    bottom: -30px;
+  }
+}

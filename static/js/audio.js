@@ -1,7 +1,4 @@
 // issues
-// if audio is muted when Start first toggled, empty silence is recorded for the
-//   first go
-// have alternate visual for audio playback
 // alert the user if incompatible browser or microphone not enabled
 
 // adult male will have a fundamental frequency from 85 to 180 Hz,
@@ -13,39 +10,49 @@ class Iridium {
     this.delayEl = document.querySelector('#delay');
     this.recordToggleEl = document.querySelector('#record-toggle');
     this.errorEl = document.querySelector('#error-field');
+    this.aboutEl = document.querySelector('#container > div > h1 + div');
 
-    this.emitter = new EventEmitter();
-    this.inputAudioContext = new AudioContext();
-    this.playbackAudioContext = new AudioContext();
-    this.inputAudioCache = new Float32Array(0);
-    this.isSpeakingCache = [];
-
-    this.inputBufferSize = 512;
-    // minimal rms pcm data level
-    this.thresholdLevel = .002;
-    this.delayTime = 1;
-    this.isSpeaking = false;
-    this.isPlaying = false;
-    this.started = false;
-    this.playbackTimeout = null;
-
-    // reset ranges
-    this.thresholdEl.value = 1;
-    this.delayEl.value = 1;
-
-    this.setupEvents();
-
-    this.setupInputAudio()
+    this.checkCompat()
       .then(() => {
-        this.initVisualizeAudio();
+        this.emitter = new EventEmitter();
+        this.inputAudioContext = new AudioContext();
+        this.playbackAudioContext = new AudioContext();
+        this.inputAudioCache = new Float32Array(0);
+        this.playbackAudioCache = new Float32Array(0);
+        this.isSpeakingCache = [];
+
+        this.inputBufferSize = 512;
+        // minimal rms pcm data level
+        this.thresholdLevel = .002;
+        this.delayTime = 1;
+        this.isSpeaking = false;
+        this.isPlaying = false;
+        this.started = false;
+        this.playbackTimeout = null;
+
+        // reset ranges
+        this.thresholdEl.value = 1;
+        this.delayEl.value = 1;
+
+        this.setupEvents();
       })
+      .then(() => this.setupInputAudio())
+      .then(() => this.initVisualizeAudio())
       .catch((err) => {
         console.log(err);
+        this.displayMessage(err, 5000);
       });
   }
 
   checkCompat () {
-    
+    return new Promise((resolve, reject) => {
+      if (window.AudioContext && navigator.vendor === 'Google Inc.') {
+        return resolve(true);
+      } else {
+        return reject('Sorry, this browser doesn\'t support web audio yet. \
+        Try Chrome for now. Other browsers are being worked on.');
+      }
+    });
   }
 
   setupEvents () {
@@ -54,7 +61,8 @@ class Iridium {
       'stopClicked': this.stopClicked,
       'thresholdChanged': this.thresholdChanged,
       'delayTimeChanged': this.delayTimeChanged,
-      'speakingStatusChanged': this.speakingStatusChanged
+      'speakingStatusChanged': this.speakingStatusChanged,
+      'aboutClicked': this.aboutClicked
     };
 
     // register events in eventEmitter
@@ -82,6 +90,9 @@ class Iridium {
 
     this.delayEl.addEventListener('input', (ev) =>
       this.emitter.emit('delayTimeChanged', ev.target.value));
+
+    this.aboutEl.addEventListener('click', (ev) =>
+      this.emitter.emit('aboutClicked', ev.target.value));
   }
 
   setupInputAudio () {
@@ -159,14 +170,16 @@ class Iridium {
       .then(() => {
         this.playbackAudioContext = new AudioContext();
 
-        // trim off excess delay silence at end of section. Add 1 second exta
+        // trim off excess delay silence at end of section. Add 1 second extra
         // between playbacks
         this.inputAudioCache = this.inputAudioCache.slice(0,
           this.inputAudioCache.length - (this.inputAudioContext.sampleRate *
           this.delayTime) + this.inputAudioContext.sampleRate);
 
+        this.playbackAudioCache = this.inputAudioCache.slice(0);
+
         const buff = this.playbackAudioContext.createBuffer(1,
-          this.inputAudioCache.length, this.inputAudioContext.sampleRate);
+          this.inputAudioCache.length || 1, this.inputAudioContext.sampleRate);
 
         buff.copyToChannel(this.inputAudioCache, 0, 0);
 
@@ -183,8 +196,6 @@ class Iridium {
 
   startClicked () {
     this.started = true;
-    
-this.displayError('itsa mario');
   }
 
   stopClicked () {
@@ -192,6 +203,16 @@ this.displayError('itsa mario');
     this.inputAudioCache = new Float32Array(0);
     this.isSpeaking = false;
     this.emitter.emit('speakingStatusChanged');
+  }
+
+  aboutClicked () {
+    const msg = `
+      Iridium is a tool to help vocal artists practice lines and accents.<br>
+      Adjust the threshold to change the minimum audio level detected.<br>
+      Change the delay value to set how much silence is required after you
+      finish speaking before it begins playing back your vocals.
+    `;
+    this.displayMessage(msg, 10000);
   }
 
   thresholdChanged (val) {
@@ -203,7 +224,7 @@ this.displayError('itsa mario');
     this.delayTime = val * 1;
   }
 
-  displayError (msg) {
+  displayMessage (msg, time) {
     this.errorEl.innerHTML = msg;
 
     const classes = this.errorEl.getAttribute('class').split(' ') || [];
@@ -217,7 +238,7 @@ this.displayError('itsa mario');
     classes.pop();
 
     setTimeout(() => this.errorEl.setAttribute('class', classes.join(' ')),
-      5000);
+      time);
   }
 
   initVisualizeAudio () {
@@ -234,24 +255,36 @@ this.displayError('itsa mario');
     canvasCtx.fillStyle = '#000';
     canvasCtx.fillRect(0, 0, width, height);
 
+    let green = 100;
+
     const draw = () => {
       if (this.started) {
-        const dataArray = this.inputAudioCache.slice(-this.inputBufferSize);
+        let dataArray;
+
+        if (this.isPlaying) {
+          dataArray = new Float32Array(this.inputBufferSize);
+        } else {
+          dataArray = this.inputAudioCache.slice(-this.inputBufferSize);
+        }
 
         if (dataArray) {
-          const bgColor = '#000';
-          canvasCtx.fillStyle = '#000';
-          canvasCtx.fillRect(0, 0, width, height);
-
           let x = 0;
 
-          dataArray.forEach((data, i) => {
-            const barHeight = data * (height / 2);
-
+          if (this.isPlaying) {
+            green < 200 ? green += 0.5 : green = 100;
+            canvasCtx.fillStyle = `rgba(0, ${green}, 0, 1)`;
+            canvasCtx.fillRect(0, 0, width, height);
+          } else {
+            canvasCtx.fillStyle = '#000';
+            canvasCtx.fillRect(0, 0, width, height);
             canvasCtx.fillStyle = '#cc0000';
+          }
+
+          for (let i = 0; i < dataArray.length; i++) {
+            const barHeight = dataArray[i] * (height / 2);
             canvasCtx.fillRect(x, height / 2, barWidth, barHeight);
             x += barWidth;
-          });
+          }
         }
       }
 
