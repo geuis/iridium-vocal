@@ -224,8 +224,8 @@ this.displayError('itsa mario');
     const canvas = document.querySelector('#display-canvas');
     const canvasCtx = canvas.getContext('2d');
     const dimensions = window.getComputedStyle(canvas);
-    const width = dimensions.width.replace('px', '') * 1;
-    const height = dimensions.height.replace('px', '') * 1;
+    const width = (dimensions.width.replace('px', '') * 1).toFixed(0) * 1;
+    const height = (dimensions.height.replace('px', '') * 1).toFixed(0) * 1;
     const barWidth = width / this.inputBufferSize;
 
     canvas.setAttribute('width', width);

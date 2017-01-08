@@ -40,9 +40,19 @@ body > #error-field.show {
   top: 3vh;
 }
 
-body > h1 {
+#container {
+  height: 100vh;
+  position: relative;
+}
+
+#container > div {
+  border: 1px solid #fff;
+  border-bottom: 0;
+}
+
+#container > div > h1 {
   color: #fff;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   background: #008D81;
   font-size: 15px;
@@ -50,78 +60,34 @@ body > h1 {
   text-align: center;
   line-height: 6vh;
   height: 6vh;
-
-  border: 1px solid #fff;
 }
 
-#container {
-  height: 94vh;
-  position: relative;
-
-  border: 1px solid #fff;
-  border-width: 0 1px 1px 1px;
+#container > div:nth-of-type(2) {
+  overflow: hidden;
 }
 
-#container > div {
-  height: 13vh;
-  outline: 1px solid #fff;
-}
-
-#container > div:first-child,
-#container > div:last-child {
-  height: 37vh;
-  font-size: 88px;
-}
-
-#container > div:first-child canvas {
+#container > div > canvas {
   width: 100%;
-  height: 100%;
-  background: #000;
+  height: 30vh;
+  background: #cc0000;
 }
 
-#container > div:nth-child(2) {
+#container > div:nth-of-type(3) {
   background: #008D81;
 }
 
-#container > div:nth-child(3) {
+#container > div:nth-of-type(4) {
   background: #0EDAC8;
 }
 
-#container > div:nth-child(2) input[type=range]:after {
-  content: 'Threshold ' attr(value);
-  top: -5vh;
-}
-
-#container > div:nth-child(3) input[type=range]:after {
-  content: 'Delay ' attr(value) 's';
-  top: auto;
-  bottom: -5vh;
-}
-
-#container > div input[type=range] {
+#container > div > input[type=range] {
   background: transparent;
   -webkit-appearance: none;
   margin: 0;
-  width: 100%;
-  height: inherit;
   position: relative;
-}
-
-#container > div input[type=range]:after {
-  position: absolute;
   display: block;
-  left: calc(50% - 25vw);
-  width: 50vw;
-  height: 8vh;
-  line-height: 8vh;
-  background: #C70D3C;
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 300;
-  border-radius: 10px;
-  border: 1px solid #fff;
-  z-index: 1;
+  width: 100%;
+  height: 14vh;
 }
 
 /* range sliders */
@@ -131,23 +97,52 @@ body > h1 {
 
 #container > div input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
-  height: 13hv;
+  height: 14vh;
   cursor: pointer;
 }
 
 #container > div input[type=range]::-webkit-slider-thumb {
   width: 20vw;
-  height: 13vh;
+  height: 14vh;
   background: #FF6F2A;
   cursor: pointer;
   -webkit-appearance: none;
   outline: 1px solid #fff;
-/*  border: 0;*/
+  border: 0;
 }
 
-/* start */
+/* labels */
+#container > div > input[type=range]:after {
+  position: absolute;
+  display: block;
+  left: calc(50% - 25vw);
+  width: 50vw;
+  height: 8vh;
+  line-height: 8vh;
+  background: #c70d3c;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 300;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  z-index: 1;
+}
+
+#container > div:nth-of-type(3) input[type=range]:after {
+  content: 'Threshold ' attr(value);
+  top: -5vh;
+}
+
+#container > div:nth-of-type(4) input[type=range]:after {
+  content: 'Delay ' attr(value) 's';
+  top: auto;
+  bottom: -5vh;
+}
+
+/* start/stop */
 #container > div:last-child {
-  height: 30vh;
+  border-bottom: 1px solid #fff;
 }
 
 #container > div:last-child input[type=checkbox] {
@@ -156,7 +151,23 @@ body > h1 {
   left: -100000px;
 }
 
-#container > div:last-child input[type=checkbox] ~ label:after {
+#container > div:last-child label {
+  display: table;
+  width: 100%;
+  height: 35vh;
+  border: none;
+  border-radius: 0;
+  background: #da500e;
+  color: #fff;
+  font-size: 88px;
+  font-weight: 300;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
+
+#container > div:last-child label:after {
   content: 'Start';
   display: table-cell;
   vertical-align: middle;
@@ -166,108 +177,94 @@ body > h1 {
   content: 'Stop';
 }
 
-#container > div:last-child label {
-  display: table;
-  width: 100%;
-  height: inherit;
-  border: none;
-  border-radius: 0;
-  background: #da500e;
-  color: #fff;
-  font-size: inherit;
-  font-weight: 300;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-}
-
 @media all and (min-width: 480px) {
-  #container > div:nth-child(2),
-  #container > div:nth-child(3) {
-    width: 75vw;
-    height: 25vh;
-  }
+/*  #container > div:nth-child(3),*/
+/*  #container > div:nth-child(4) {*/
+/*    width: 70vw;*/
+/*    height: 25vh;*/
+/*  }*/
 
-  #container > div:nth-child(3) input[type=range]:after {
-    bottom: -1px;
+  #container > div:nth-of-type(3),
+  #container > div:nth-of-type(4) {
+    width: 70vw;
   }
 
   /* start button */
   #container > div:last-child {
-    font-size: 24px;
-/*    width: calc(25vw - 3px);*/
-/*    height: calc(50vh + 1px);*/
-    width: calc(25vw);
-    height: calc(50vh);
-
+    position: relative;
+    width: calc(30vw + 1px);
     float: right;
+    top: calc(-28vh - 2px);
+/*    float: right;*/
 /*    margin-top: calc(-50vh - 2px);*/
-  margin-top: calc(-50vh);
+/*  margin-top: calc(-50vh);*/
   }
 
-  #container > div input[type=range]::-webkit-slider-runnable-track,
-  #container > div input[type=range]::-webkit-slider-thumb {
-    height: 25vh;
+  #container > div:last-child label {
+    font-size: 24px;
   }
+/*  #container > div input[type=range]::-webkit-slider-runnable-track,*/
+/*  #container > div input[type=range]::-webkit-slider-thumb {*/
+/*    height: 25vh;*/
+/*  }*/
 }
 
-@media all and (min-width: 768px) {
-  body > h1 {
-    width: 766px;
-    font-size: 20px;
-  }
-
-  #container {
-    width: 768px;
-    height: 600px;
-    margin: 0 auto;
-  }
-
-  #container > div {
-    height: 150px;
-  }
-
-  #container > div:first-child,
-  #container > div:last-child {
-    height: 300px;
-  }
-
-  #container > div:nth-child(2),
-  #container > div:nth-child(3) {
-    width: 75%;
-    height: 150px;
-  }
-
-  /* start button */
-  #container > div:last-child {
-    width: calc(25% - 3px);
-/*    height: 301px;*/
-/*    margin-top: -302px;*/
-  }
-
-  #container > div input[type=range]:after {
-    width: 150px;
-    height: 48px;
-    line-height: 48px;
-    left: calc(50% - 75px);
-  }
-
-  #container > div:nth-child(2) input[type=range]:after {
-    top: -24px;
-  }
-
-  #container > div:nth-child(3) input[type=range]:after {
-    top: auto;
-    bottom: -24px;
-  }
-
-  #container > div input[type=range]::-webkit-slider-runnable-track,
-  #container > div input[type=range]::-webkit-slider-thumb {
-    height: 150px;
-  }
-
-  #container > div input[type=range]::-webkit-slider-thumb {
-    width: 150px;
-  }
-}
+/*@media all and (min-width: 768px) {*/
+/*  body > h1 {*/
+/*    width: 766px;*/
+/*    font-size: 20px;*/
+/*  }*/
+/**/
+/*  #container {*/
+/*    width: 768px;*/
+/*    height: 600px;*/
+/*    margin: 0 auto;*/
+/*  }*/
+/**/
+/*  #container > div {*/
+/*    height: 150px;*/
+/*  }*/
+/**/
+/*  #container > div:first-child,*/
+/*  #container > div:last-child {*/
+/*    height: 300px;*/
+/*  }*/
+/**/
+/*  #container > div:nth-child(2),*/
+/*  #container > div:nth-child(3) {*/
+/*    width: 75%;*/
+/*    height: 150px;*/
+/*  }*/
+/**/
+/*  /* start button */*/
+/*  #container > div:last-child {*/
+/*    width: calc(25% - 3px);*/
+/*/*    height: 301px;*/*/
+/*/*    margin-top: -302px;*/*/
+/*  }*/
+/**/
+/*  #container > div input[type=range]:after {*/
+/*    width: 150px;*/
+/*    height: 48px;*/
+/*    line-height: 48px;*/
+/*    left: calc(50% - 75px);*/
+/*  }*/
+/**/
+/*  #container > div:nth-child(2) input[type=range]:after {*/
+/*    top: -24px;*/
+/*  }*/
+/**/
+/*  #container > div:nth-child(3) input[type=range]:after {*/
+/*    top: auto;*/
+/*    bottom: -24px;*/
+/*  }*/
+/**/
+/*  #container > div input[type=range]::-webkit-slider-runnable-track,*/
+/*  #container > div input[type=range]::-webkit-slider-thumb {*/
+/*    height: 150px;*/
+/*  }*/
+/**/
+/*  #container > div input[type=range]::-webkit-slider-thumb {*/
+/*    width: 150px;*/
+/*  }*/
+/*}*/
