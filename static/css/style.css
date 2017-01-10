@@ -19,10 +19,10 @@ body * {
   box-sizing: border-box;
 }
 
-body > #error-field {
+body > #message-field {
   position: absolute;
   z-index: 1;
-  top: -20vh;
+  top: -50vh;
   width: 90%;
   min-height: 30px;
   line-height: 30px;
@@ -37,8 +37,12 @@ body > #error-field {
   text-align: center;
 }
 
-body > #error-field.show {
+body > #message-field.show {
   top: 3vh;
+}
+
+body > #message-field.show a {
+  color: #fff;
 }
 
 #container {

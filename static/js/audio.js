@@ -9,7 +9,7 @@ class Iridium {
     this.thresholdEl = document.querySelector('#threshold');
     this.delayEl = document.querySelector('#delay');
     this.recordToggleEl = document.querySelector('#record-toggle');
-    this.errorEl = document.querySelector('#error-field');
+    this.errorEl = document.querySelector('#message-field');
     this.aboutEl = document.querySelector('#container > div > h1 + div');
 
     this.checkCompat()
@@ -210,7 +210,9 @@ class Iridium {
       Iridium is a tool to help vocal artists practice lines and accents.<br>
       Adjust the threshold to change the minimum audio level detected.<br>
       Change the delay value to set how much silence is required after you
-      finish speaking before it begins playing back your vocals.
+      finish speaking before it begins playing back your vocals.<br>
+      <br>
+      <a href="mailto:charles@geuis.com" target="_blank">Got feedback? Contact.</a>
     `;
     this.displayMessage(msg, 10000);
   }
