@@ -32,21 +32,21 @@ Iridium uses the [web audio api](https://developer.mozilla.org/en-US/docs/Web/AP
 
 The goal is to eventually let Iridium work on all supporting devices, from phones and tablets to all desktop browsers.
 
-### Troubleshooting
+## Troubleshooting
 
-## No audio being recorded?
+### No audio being recorded?
 
 Double check that your microphone isn't muted. This seems dumb and/or obvious, but its the number one reason that Iridium doesn't seem to be recording.
 
-## Check that audio devices are allowed
+### Check that audio devices are allowed
 
 During the first time you try accessing Iridium, Chrome should ask you to choose a microphone to record from. If you have selected the wrong one (laptop internal microphone versus your external mic) or did not permit access, there is a camera icon on the right side of your address bar. Click on that icon and update your settings.
 
-## Getting feedback issues?
+### Getting feedback issues?
 
 You have to use headphones. If Iridium can hear its own audio output, it creates feedback and will not let the app work correctly.
 
-# Support and Contact
+## Support and Contact
 
 If you are technically savy and/or familiar with Github, [please create an issue](https://github.com/geuis/iridium-vocal/issues).
 
