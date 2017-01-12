@@ -1,37 +1,53 @@
-## Welcome to GitHub Pages
+# Welcome to Iridium, a tool for vocal artists
 
-You can use the [editor on GitHub](https://github.com/geuis/iridium-vocal/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Visit https://geuis.github.io/iridium-vocal/ to use Iridium yourself. Make sure to read the usage notes below first.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Need help, have questions, or want to propose ideas? See the Support and Contact section below.
 
-### Markdown
+## What is Iridium?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Iridium is a practice tool for vocal artists. 
 
-```markdown
-Syntax highlighted code block
+## How to use Iridium?
 
-# Header 1
-## Header 2
-### Header 3
+After clicking start, Iridium will record from your selected microphone. It will detect when you stop speaking and after a configurable delay period, the recorded audio will be played back in a loop. Simply begin speaking again to continue the session. **Make sure you are using headphones. Using a speaker will cause feedback issues.**
 
-- Bulleted
-- List
+## Configuration
 
-1. Numbered
-2. List
+There are two settings that can be changed: Threshold and Delay. 
 
-**Bold** and _Italic_ and `Code` text
+### Threshold
 
-[Link](url) and ![Image](src)
-```
+Threshold lets you adjust the minimum noise detection level. Since most vocal artists use studios that are soundproofed, this setting allows you to make minor adjustments for an already semi-quiet environment. It can't work correctly in a loud space.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Delay
 
-### Jekyll Themes
+Delay sets the minimum amount of time that Iridium should wait after you stop speaking before continuing to record.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/geuis/iridium-vocal/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Supported Browsers
 
-### Support or Contact
+Currently Iridium is only working in Chrome. It also works in Firefox, but there are some minor styling issues that still have to be fixed to make the application usable in that browser. No other browsers (Desktop and Mobile Safari or Internet Explorer) completely support the browser features that Iridium requires to work, so support is limited for now.
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Iridium uses the [web audio api](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) to interface with your microphone. Currently only Chrome and Firefox fully support this specification. 
+
+The goal is to eventually let Iridium work on all supporting devices, from phones and tablets to all desktop browsers.
+
+### Troubleshooting
+
+## No audio being recorded?
+
+Double check that your microphone isn't muted. This seems dumb and/or obvious, but its the number one reason that Iridium doesn't seem to be recording.
+
+## Check that audio devices are allowed
+
+During the first time you try accessing Iridium, Chrome should ask you to choose a microphone to record from. If you have selected the wrong one (laptop internal microphone versus your external mic) or did not permit access, there is a camera icon on the right side of your address bar. Click on that icon and update your settings.
+
+## Getting feedback issues?
+
+You have to use headphones. If Iridium can hear its own audio output, it creates feedback and will not let the app work correctly.
+
+# Support and Contact
+
+If you are technically savy and/or familiar with Github, [please create an issue](https://github.com/geuis/iridium-vocal/issues).
+
+Otherwise, feel free to just contact me directly via email with your problems, suggestions, and questions at charles@geuis.com.
